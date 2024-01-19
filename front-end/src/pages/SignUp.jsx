@@ -1,4 +1,4 @@
-const SignUp = () => {
+export default function SignUp() {
     return (
         <div className="w-full p-5">
             <div className="w-full">
@@ -23,6 +23,4 @@ const SignUp = () => {
             </div>
         </div>
     );
-};
-
-export default SignUp;
+}
