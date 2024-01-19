@@ -9,6 +9,7 @@ export default {
                 },
                 greys: {
                     500: "#E7EAEF",
+                    600: "#999FAB",
                 },
                 blues: {
                     400: "#0F6BC1",
