@@ -36,6 +36,7 @@ const Input = (props) => {
                 autoComplete={
                     props.autoComplete ? `${props.autoComplete}` : "off"
                 }
+                id={props.id}
                 spellCheck="false"
                 ref={props.ref}
             />
