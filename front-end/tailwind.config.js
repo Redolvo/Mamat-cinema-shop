@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme";
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
@@ -21,6 +22,9 @@ export default {
                     500: "#F5CC00",
                     600: "#CCA000",
                 },
+            },
+            fontFamily: {
+                sans: ["Satoshi", ...defaultTheme.fontFamily.sans],
             },
         },
     },
