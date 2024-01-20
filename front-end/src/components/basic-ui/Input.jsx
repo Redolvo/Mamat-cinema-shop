@@ -12,7 +12,7 @@ const Input = (props) => {
         medium: "py-2 px-4",
         large: "py-3 px-6",
     };
-    const addSize = props.size ? sizes[props.size] : "py-2 px-4";
+    const addSize = props.size ? sizes[props.size] : "py-3 px-4";
     const addShape = props.shape ? shapes[props.shape] : "rounded";
     const addClass = props.className ? `${props.className}` : "";
     const addType = props.type ? `${props.type}` : "text";
@@ -29,7 +29,7 @@ const Input = (props) => {
                 onChange={props.onChange}
                 placeholder={props.placeholder}
                 value={props.value}
-                className={`${addClass} ${addSize} ${addShape} ${addSize} ${disabled_css}`}
+                className={`{${addClass} w-full block relative ${addShape} ${addSize} bg-greys-500 overflow-x-auto focus:outline-none focus:ring-0 border border-greys-500 focus:border-greys-600 peer${disabled_css}}`}
                 disabled={props.disabled}
                 readOnly={props.readOnly}
                 required={props.reaquired}

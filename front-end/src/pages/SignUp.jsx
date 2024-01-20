@@ -1,7 +1,6 @@
-export default function SignUp() {
-import Input from "../components/basic-ui/Input";
+import Input from "@/components/basic-ui/Input";
 
-const SignUp = () => {
+export default function SignUp() {
     return (
         <div className="w-full p-5">
             <div className="w-full">
