@@ -9,12 +9,14 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [agree, setAgree] = useState(true);
-
     const [nameError, setNameError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
-
+    const [isNameValid, setIsNameValid] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [checkboxDisabled, setCheckboxDisabled] = useState(true);
     const formData = useMemo(() => new FormData(), []);
     useEffect(() => {
         if (name) {
@@ -35,73 +37,85 @@ export default function SignUp() {
         }
     }, [email, formData]);
     useEffect(() => {
-        if (password) {
-            if (formData.has("password")) {
-                formData.set("password", password);
-            } else {
-                formData.append("password", password);
+        if (password && confirmPassword) {
+            if (password === confirmPassword) {
+                if (formData.has("password")) {
+                    formData.set("password", password);
+                } else {
+                    formData.append("password", password);
+                }
             }
         }
-    }, [password, formData]);
+    }, [password, confirmPassword, formData]);
+    useEffect(() => {
+        if (isNameValid && isEmailValid && isPasswordValid) {
+            setCheckboxDisabled(false);
+        }
+    }, [isNameValid, isEmailValid, isPasswordValid]);
     function validateName(name) {
         const regex = /^[a-zA-Z .]+$/;
-
         if (!name) {
             return "Name is required";
         }
-
         if (!regex.test(name)) {
             return "Invalid characters in name";
         }
-
         setName(name);
-
+        setIsNameValid(true);
         return "";
     }
-
     function validateEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!email) {
             return "Email is required";
         }
-
         if (!regex.test(email)) {
             return "Invalid email format";
         }
-
         setEmail(email);
-
+        setIsEmailValid(true);
         return "";
     }
-
-    function validatePassword(password) {
+    function validatePassword(password, confirmPassword) {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
         if (!password) {
+            setIsPasswordValid(false);
+            if (confirmPassword) {
+                setConfirmPasswordError("Passwords do not match");
+            }
             return "Password is required";
         }
-
         if (!regex.test(password)) {
+            setIsPasswordValid(false);
+            if (confirmPassword) {
+                setConfirmPasswordError("Passwords do not match");
+            }
             return "Password must be at least 8 characters and contain at least one lowercase letter, one uppercase letter, and one digit";
         }
-
+        if (password === confirmPassword) {
+            setConfirmPasswordError("");
+            setIsPasswordValid(true);
+        } else {
+            if (confirmPassword) {
+                setConfirmPasswordError("Passwords do not match");
+            }
+        }
         setPassword(password);
 
         return "";
     }
-
     function validateConfirmPassword(confirmPassword, password) {
+        setConfirmPassword(confirmPassword);
         if (!confirmPassword) {
+            setIsPasswordValid(false);
             return "Confirm Password is required";
         }
-
         if (confirmPassword !== password) {
+            setIsPasswordValid(false);
             return "Passwords do not match";
         }
-
         setConfirmPassword(confirmPassword);
-
+        setIsPasswordValid(true);
         return "";
     }
     return (
@@ -151,7 +165,10 @@ export default function SignUp() {
                             parentMargin={"mt-4"}
                             onChange={(e) => {
                                 setPasswordError(
-                                    validatePassword(e.target.value)
+                                    validatePassword(
+                                        e.target.value,
+                                        confirmPassword
+                                    )
                                 );
                             }}
                         />
@@ -178,7 +195,7 @@ export default function SignUp() {
                             <input
                                 type="checkbox"
                                 id="aggrement"
-                                disabled
+                                disabled={checkboxDisabled}
                                 onChange={(e) => setAgree(!e.target.checked)}
                             />
                             <label
