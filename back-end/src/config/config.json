@@ -1,0 +1,10 @@
+{
+    "development": {
+      "username": "root",
+      "password": "",
+      "database": "mamat-cinema-shop",
+      "host": "localhost",
+      "dialect": "mysql",
+      "operatorsAliases": false
+    }
+  }
