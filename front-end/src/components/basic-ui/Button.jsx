@@ -19,7 +19,7 @@ const Button = (props) => {
     };
     // Props ( color, size, className, onClick )
     const addcolor =
-        "text-gray-100 bg-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600";
+        "text-white bg-blues-500 border-blues-500 hover:bg-blues-600 hover:border-blues-600";
     const addSize = props.size ? sizes[props.size] : "py-2 px-4";
     const addshape = props.shape ? shapes[props.shape] : "rounded";
     const addtype = props.type ? types[props.type] : "button";
@@ -30,14 +30,14 @@ const Button = (props) => {
             {typeClick ? (
                 <button
                     onClick={props.onClick}
-                    className={`${addClass}inline-block text-center border leading-5 hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
+                    className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
                     type={`${addtype}`}
                 >
                     {props.children}
                 </button>
             ) : (
                 <button
-                    className={`${addClass}inline-block text-center border leading-5 hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
+                    className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
                     type={`${addtype}`}
                 >
                     {props.children}
