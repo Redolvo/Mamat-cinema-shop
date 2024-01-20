@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const sequelize = require("./config/database");
 const usersRoutes = require("./routes/users-routes");
+const filmRoutes = require("./routes/film-routes");
 
 // Cors
 app.use(cors());
@@ -11,20 +12,18 @@ app.use(cors());
 // MODELS
 const bioskop = require("./models/bioskop");
 const mall = require("./models/mall");
+const film = require("./models/film");
 // MODELS END
+
 const checkTokenMiddleware = require("./middleware/check-token"); // Import middleware
 const PORT = 3000;
 
 app.use(express.json());
 app.use(cookieParser());
 
-// TEMP
-app.use("/login-page", express.static("public/login.html"));
-app.use("/signup-page", express.static("public/signup.html"));
-app.use("/home-page", checkTokenMiddleware, express.static("public/home.html"));
-
 // Routes
 app.use("/api", usersRoutes);
+app.use("/api", filmRoutes);
 
 sequelize
     .sync({ force: false })

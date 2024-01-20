@@ -8,8 +8,10 @@ import {
     IoMdStar,
 } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
+import { cekLogin } from "../api/auth";
 
 export default function Home() {
+    cekLogin()
     return (
         <>
             {/* header */}
