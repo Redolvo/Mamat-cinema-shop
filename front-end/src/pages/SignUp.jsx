@@ -1,10 +1,14 @@
 import Input from "@/components/basic-ui/Input";
 import Button from "@/components/basic-ui/Button";
 import { NavLink } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchSignUp } from "../api/auth";
+import { useNavigate } from "react-router-dom";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 export default function SignUp() {
-    const [name, setName] = useState("");
+    const navigate = useNavigate();
+    const [full_name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,36 +21,8 @@ export default function SignUp() {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [checkboxDisabled, setCheckboxDisabled] = useState(true);
-    const formData = useMemo(() => new FormData(), []);
-    useEffect(() => {
-        if (name) {
-            if (formData.has("name")) {
-                formData.set("name", name);
-            } else {
-                formData.append("name", name);
-            }
-        }
-    }, [name, formData]);
-    useEffect(() => {
-        if (email) {
-            if (formData.has("email")) {
-                formData.set("email", email);
-            } else {
-                formData.append("email", email);
-            }
-        }
-    }, [email, formData]);
-    useEffect(() => {
-        if (password && confirmPassword) {
-            if (password === confirmPassword) {
-                if (formData.has("password")) {
-                    formData.set("password", password);
-                } else {
-                    formData.append("password", password);
-                }
-            }
-        }
-    }, [password, confirmPassword, formData]);
+    const [typePassword, setTypePassword] = useState("password");
+    const [typeConfirmPassword, setTypeConfirmPassword] = useState("password");
     useEffect(() => {
         if (isNameValid && isEmailValid && isPasswordValid) {
             setCheckboxDisabled(false);
@@ -118,6 +94,17 @@ export default function SignUp() {
         setIsPasswordValid(true);
         return "";
     }
+    const fetchDataUser = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetchSignUp({ full_name, email, password });
+            if (response.status === 201) {
+                navigate("/signin");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <div className="w-full p-5">
             <div className="w-full">
@@ -137,10 +124,11 @@ export default function SignUp() {
                     </p>
                 </div>
                 <div className="mt-5">
-                    <form action="">
+                    <form action="" onSubmit={(e) => fetchDataUser(e)}>
                         <Input
                             placeholder={"Full Name"}
                             parentMargin={"mb-0"}
+                            id={"name"}
                             onChange={(e) => {
                                 setNameError(validateName(e.target.value));
                             }}
@@ -152,6 +140,7 @@ export default function SignUp() {
                             placeholder={"Email"}
                             type={"email"}
                             parentMargin={"mt-4"}
+                            id={"email"}
                             onChange={(e) => {
                                 setEmailError(validateEmail(e.target.value));
                             }}
@@ -159,38 +148,82 @@ export default function SignUp() {
                         <p className="text-red-500 text-xs font-medium">
                             {emailError}
                         </p>
-                        <Input
-                            placeholder={"Password"}
-                            type={"password"}
-                            parentMargin={"mt-4"}
-                            onChange={(e) => {
-                                setPasswordError(
-                                    validatePassword(
-                                        e.target.value,
-                                        confirmPassword
-                                    )
-                                );
-                            }}
-                        />
-                        <p className="text-red-500 text-xs font-medium">
-                            {passwordError}
-                        </p>
-                        <Input
-                            placeholder={"Confirm Password"}
-                            type={"password"}
-                            parentMargin={"mt-4"}
-                            onChange={(e) => {
-                                setConfirmPasswordError(
-                                    validateConfirmPassword(
-                                        e.target.value,
-                                        password
-                                    )
-                                );
-                            }}
-                        />
-                        <p className="text-red-500 text-xs font-medium">
-                            {confirmPasswordError}
-                        </p>
+                        <div className="relative">
+                            <Input
+                                placeholder={"Password"}
+                                type={typePassword}
+                                parentMargin={"mt-4"}
+                                id={"password"}
+                                onChange={(e) => {
+                                    setPasswordError(
+                                        validatePassword(
+                                            e.target.value,
+                                            confirmPassword
+                                        )
+                                    );
+                                }}
+                            />
+                            <p className="text-red-500 text-xs font-medium">
+                                {passwordError}
+                            </p>
+                            <label
+                                className="absolute top-4 right-4"
+                                htmlFor="password"
+                            >
+                                {typePassword === "password" ? (
+                                    <LuEye
+                                        onClick={() => setTypePassword("text")}
+                                        className="text-xl text-greys-600 cursor-pointer"
+                                    />
+                                ) : (
+                                    <LuEyeOff
+                                        onClick={() =>
+                                            setTypePassword("password")
+                                        }
+                                        className="text-xl text-greys-600 cursor-pointer"
+                                    />
+                                )}
+                            </label>
+                        </div>
+                        <div className="relative">
+                            <Input
+                                placeholder={"Confirm Password"}
+                                type={typeConfirmPassword}
+                                parentMargin={"mt-4"}
+                                id={"confirm-password"}
+                                onChange={(e) => {
+                                    setConfirmPasswordError(
+                                        validateConfirmPassword(
+                                            e.target.value,
+                                            password
+                                        )
+                                    );
+                                }}
+                            />
+                            <p className="text-red-500 text-xs font-medium">
+                                {confirmPasswordError}
+                            </p>
+                            <label
+                                className="absolute top-4 right-4"
+                                htmlFor="confirm-password"
+                            >
+                                {typeConfirmPassword === "password" ? (
+                                    <LuEye
+                                        onClick={() =>
+                                            setTypeConfirmPassword("text")
+                                        }
+                                        className="text-xl text-greys-600 cursor-pointer"
+                                    />
+                                ) : (
+                                    <LuEyeOff
+                                        onClick={() =>
+                                            setTypeConfirmPassword("password")
+                                        }
+                                        className="text-xl text-greys-600 cursor-pointer"
+                                    />
+                                )}
+                            </label>
+                        </div>
                         <div className="flex items-center mt-5">
                             <input
                                 type="checkbox"
@@ -237,8 +270,8 @@ export default function SignUp() {
                         <div className="mt-10">
                             <Button
                                 className="w-full"
+                                type={"submit"}
                                 disabled={agree}
-                                onClick={() => console.log("able")}
                             >
                                 Sign Up
                             </Button>

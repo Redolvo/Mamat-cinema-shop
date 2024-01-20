@@ -1,8 +1,61 @@
 import Input from "@/components/basic-ui/Input";
 import Button from "@/components/basic-ui/Button";
 import { NavLink } from "react-router-dom";
+import { fetchSignIn } from "../api/auth";
+import { useEffect, useState } from "react";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 export default function SignIn() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [signIn, setSignIn] = useState(true);
+    const [typePassword, setTypePassword] = useState("password");
+    useEffect(() => {
+        if (isEmailValid && isPasswordValid) {
+            setSignIn(false);
+        }
+    }, [isEmailValid, isPasswordValid]);
+    function validateEmail(email) {
+        setEmail(email);
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+            return "Email is required";
+        }
+        if (!regex.test(email)) {
+            return "Invalid email format";
+        }
+        setIsEmailValid(true);
+        return "";
+    }
+    function validatePassword(password) {
+        setPassword(password);
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        if (!password) {
+            setIsPasswordValid(false);
+            return "Password is required";
+        }
+        if (!regex.test(password)) {
+            setIsPasswordValid(false);
+            return "Password must be at least 8 characters and contain at least one lowercase letter, one uppercase letter, and one digit";
+        }
+        setIsPasswordValid(true);
+        return "";
+    }
+    const fetchDataUser = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetchSignIn({ email, password });
+            if (response.status === 201) {
+                //
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <div className="w-full p-5">
             <div className="w-full">
@@ -22,13 +75,53 @@ export default function SignIn() {
                     </p>
                 </div>
                 <div className="mt-5">
-                    <form action="">
-                        <Input placeholder={"Email"} type={"email"} />
+                    <form action="" onSubmit={(e) => fetchDataUser(e)}>
                         <Input
-                            placeholder={"Password"}
-                            type={"password"}
-                            parentMargin={"mb-0"}
+                            placeholder={"Email"}
+                            type={"email"}
+                            parentMargin={"mt-4"}
+                            id={"email"}
+                            onChange={(e) => {
+                                setEmailError(validateEmail(e.target.value));
+                            }}
                         />
+                        <p className="text-red-500 text-xs font-medium">
+                            {emailError}
+                        </p>
+                        <div className="relative">
+                            <Input
+                                placeholder={"Password"}
+                                type={typePassword}
+                                parentMargin={"mt-4"}
+                                id={"password"}
+                                onChange={(e) => {
+                                    setPasswordError(
+                                        validatePassword(e.target.value)
+                                    );
+                                }}
+                            />
+                            <p className="text-red-500 text-xs font-medium">
+                                {passwordError}
+                            </p>
+                            <label
+                                className="absolute top-4 right-4"
+                                htmlFor="password"
+                            >
+                                {typePassword === "password" ? (
+                                    <LuEye
+                                        onClick={() => setTypePassword("text")}
+                                        className="text-xl text-greys-600 cursor-pointer"
+                                    />
+                                ) : (
+                                    <LuEyeOff
+                                        onClick={() =>
+                                            setTypePassword("password")
+                                        }
+                                        className="text-xl text-greys-600 cursor-pointer"
+                                    />
+                                )}
+                            </label>
+                        </div>
                         <div className="mt-1">
                             <p className="cursor-pointer text-xs text-blacks-500 font-medium text-end">
                                 Forgot Password?
@@ -64,7 +157,13 @@ export default function SignIn() {
                             </div>
                         </div>
                         <div className="mt-10">
-                            <Button className="w-full">Sign In</Button>
+                            <Button
+                                className="w-full"
+                                disabled={signIn}
+                                type={"submit"}
+                            >
+                                Sign In
+                            </Button>
                         </div>
                     </form>
                 </div>
