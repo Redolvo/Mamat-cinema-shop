@@ -31,6 +31,7 @@ const Button = (props) => {
                 <button
                     onClick={props.onClick}
                     className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
+                    disabled={props.disabled}
                     type={`${addtype}`}
                 >
                     {props.children}
@@ -38,6 +39,7 @@ const Button = (props) => {
             ) : (
                 <button
                     className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
+                    disabled={props.disabled}
                     type={`${addtype}`}
                 >
                     {props.children}
@@ -54,6 +56,7 @@ Button.propTypes = {
     className: PropTypes.any,
     onClick: PropTypes.any,
     children: PropTypes.any,
+    disabled: PropTypes.any,
 };
 
 export default Button;
