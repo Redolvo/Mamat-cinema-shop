@@ -1,46 +1,26 @@
 import Input from "@/components/basic-ui/Input";
 import Button from "@/components/basic-ui/Button";
 import { NavLink } from "react-router-dom";
+import { fetchSignIn } from "../api/auth";
 import { useEffect, useState } from "react";
-import { fetchSignUp } from "../api/auth";
-import { useNavigate } from "react-router-dom";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 
-export default function SignUp() {
-    const navigate = useNavigate();
-    const [full_name, setName] = useState("");
+export default function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [agree, setAgree] = useState(true);
-    const [nameError, setNameError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [confirmPasswordError, setConfirmPasswordError] = useState("");
-    const [isNameValid, setIsNameValid] = useState(false);
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
-    const [checkboxDisabled, setCheckboxDisabled] = useState(true);
+    const [signIn, setSignIn] = useState(true);
     const [typePassword, setTypePassword] = useState("password");
-    const [typeConfirmPassword, setTypeConfirmPassword] = useState("password");
     useEffect(() => {
-        if (isNameValid && isEmailValid && isPasswordValid) {
-            setCheckboxDisabled(false);
+        if (isEmailValid && isPasswordValid) {
+            setSignIn(false);
         }
-    }, [isNameValid, isEmailValid, isPasswordValid]);
-    function validateName(name) {
-        const regex = /^[a-zA-Z .]+$/;
-        if (!name) {
-            return "Name is required";
-        }
-        if (!regex.test(name)) {
-            return "Invalid characters in name";
-        }
-        setName(name);
-        setIsNameValid(true);
-        return "";
-    }
+    }, [isEmailValid, isPasswordValid]);
     function validateEmail(email) {
+        setEmail(email);
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
             return "Email is required";
@@ -48,58 +28,29 @@ export default function SignUp() {
         if (!regex.test(email)) {
             return "Invalid email format";
         }
-        setEmail(email);
         setIsEmailValid(true);
         return "";
     }
-    function validatePassword(password, confirmPassword) {
+    function validatePassword(password) {
+        setPassword(password);
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
         if (!password) {
             setIsPasswordValid(false);
-            if (confirmPassword) {
-                setConfirmPasswordError("Passwords do not match");
-            }
             return "Password is required";
         }
         if (!regex.test(password)) {
             setIsPasswordValid(false);
-            if (confirmPassword) {
-                setConfirmPasswordError("Passwords do not match");
-            }
             return "Password must be at least 8 characters and contain at least one lowercase letter, one uppercase letter, and one digit";
         }
-        if (password === confirmPassword) {
-            setConfirmPasswordError("");
-            setIsPasswordValid(true);
-        } else {
-            if (confirmPassword) {
-                setConfirmPasswordError("Passwords do not match");
-            }
-        }
-        setPassword(password);
-
-        return "";
-    }
-    function validateConfirmPassword(confirmPassword, password) {
-        setConfirmPassword(confirmPassword);
-        if (!confirmPassword) {
-            setIsPasswordValid(false);
-            return "Confirm Password is required";
-        }
-        if (confirmPassword !== password) {
-            setIsPasswordValid(false);
-            return "Passwords do not match";
-        }
-        setConfirmPassword(confirmPassword);
         setIsPasswordValid(true);
         return "";
     }
     const fetchDataUser = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetchSignUp({ full_name, email, password });
+            const response = await fetchSignIn({ email, password });
             if (response.status === 201) {
-                navigate("/signin");
+                //
             }
         } catch (error) {
             console.error(error);
@@ -115,27 +66,16 @@ export default function SignUp() {
                         alt="mamat-cinema-logo"
                     />
                 </div>
-                <div className="mt-[60px]">
-                    <h1 className="text-4xl font-bold">Welcome New User!</h1>
+                <div className="mt-[120px]">
+                    <h1 className="text-4xl font-bold">Welcome Back!</h1>
                 </div>
                 <div className="mt-3">
                     <p className="text-base text-greys-600 font-medium">
-                        Sign up to join
+                        Sign in to continue
                     </p>
                 </div>
                 <div className="mt-5">
                     <form action="" onSubmit={(e) => fetchDataUser(e)}>
-                        <Input
-                            placeholder={"Full Name"}
-                            parentMargin={"mb-0"}
-                            id={"name"}
-                            onChange={(e) => {
-                                setNameError(validateName(e.target.value));
-                            }}
-                        />
-                        <p className="text-red-500 text-xs font-medium">
-                            {nameError}
-                        </p>
                         <Input
                             placeholder={"Email"}
                             type={"email"}
@@ -156,10 +96,7 @@ export default function SignUp() {
                                 id={"password"}
                                 onChange={(e) => {
                                     setPasswordError(
-                                        validatePassword(
-                                            e.target.value,
-                                            confirmPassword
-                                        )
+                                        validatePassword(e.target.value)
                                     );
                                 }}
                             />
@@ -185,67 +122,19 @@ export default function SignUp() {
                                 )}
                             </label>
                         </div>
-                        <div className="relative">
-                            <Input
-                                placeholder={"Confirm Password"}
-                                type={typeConfirmPassword}
-                                parentMargin={"mt-4"}
-                                id={"confirm-password"}
-                                onChange={(e) => {
-                                    setConfirmPasswordError(
-                                        validateConfirmPassword(
-                                            e.target.value,
-                                            password
-                                        )
-                                    );
-                                }}
-                            />
-                            <p className="text-red-500 text-xs font-medium">
-                                {confirmPasswordError}
+                        <div className="mt-1">
+                            <p className="cursor-pointer text-xs text-blacks-500 font-medium text-end">
+                                Forgot Password?
                             </p>
-                            <label
-                                className="absolute top-4 right-4"
-                                htmlFor="confirm-password"
-                            >
-                                {typeConfirmPassword === "password" ? (
-                                    <LuEye
-                                        onClick={() =>
-                                            setTypeConfirmPassword("text")
-                                        }
-                                        className="text-xl text-greys-600 cursor-pointer"
-                                    />
-                                ) : (
-                                    <LuEyeOff
-                                        onClick={() =>
-                                            setTypeConfirmPassword("password")
-                                        }
-                                        className="text-xl text-greys-600 cursor-pointer"
-                                    />
-                                )}
-                            </label>
-                        </div>
-                        <div className="flex items-center mt-5">
-                            <input
-                                type="checkbox"
-                                id="aggrement"
-                                disabled={checkboxDisabled}
-                                onChange={(e) => setAgree(!e.target.checked)}
-                            />
-                            <label
-                                htmlFor="aggrement"
-                                className="ml-2 text-xs text-blacks-500 font-medium"
-                            >
-                                I agree to the Term of Service
-                            </label>
                         </div>
                         <div className="mt-10">
                             <p className="text-center text-xs font-medium text-blacks-500">
-                                Already have account?{" "}
+                                Don’t have account?{" "}
                                 <NavLink
-                                    to={"/signin"}
+                                    to={"/signup"}
                                     className="text-blues-500 cursor-pointer"
                                 >
-                                    Sign In now
+                                    Sign Up now
                                 </NavLink>
                             </p>
                         </div>
@@ -270,10 +159,10 @@ export default function SignUp() {
                         <div className="mt-10">
                             <Button
                                 className="w-full"
+                                disabled={signIn}
                                 type={"submit"}
-                                disabled={agree}
                             >
-                                Sign Up
+                                Sign In
                             </Button>
                         </div>
                     </form>
