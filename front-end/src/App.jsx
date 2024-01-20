@@ -1,15 +1,16 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from "@/pages/Home";
+import SignUp from "@/pages/SignUp";
+
 function App() {
     return (
-        <>
-            <div>
-                <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/signup" element={<SignUp />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
 
