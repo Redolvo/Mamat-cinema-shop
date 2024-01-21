@@ -4,7 +4,7 @@ const schedule = require("../models/schedule");
 
 const getUserTicket = async (req, res) => {
     try {
-        const { user_id } = req.body;
+        const user_id = req.userId;
 
         // Fetch ticket transactions for the user
         const ticket_transactions = await ticket_transaction.findAll({

@@ -22,8 +22,11 @@ function App() {
                 {/* views content */}
                 <Route path="/" element={<Home />} />
                 <Route path="/movie/:id" element={<MovieDetail />} />
-                <Route path="/checkout-ticket/1" element={<CheckoutTicket />} />
-                <Route path="/your-ticket/1" element={<Ticket />} />
+                <Route
+                    path="/checkout-ticket/:id"
+                    element={<CheckoutTicket />}
+                />
+                <Route path="/your-ticket/:id" element={<Ticket />} />
                 <Route path="/ticket-list" element={<TicketList />} />
             </Routes>
         </BrowserRouter>

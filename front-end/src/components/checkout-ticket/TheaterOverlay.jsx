@@ -8,7 +8,11 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { getMalls } from "../../api/mall";
 
-export default function TheaterOverlay(props) {
+export default function TheaterOverlay({
+    showTheater,
+    handleCloseTheater,
+    setPrice,
+}) {
     const [malls, setMalls] = useState(null);
     const [link, setLink] = useState("");
     const [addres, setAddres] = useState("");
@@ -28,27 +32,25 @@ export default function TheaterOverlay(props) {
         <>
             <div
                 className={`fixed top-0 left-0 w-full h-full flex flex-col justify-end transition duration-200 z-50 ease-in-out ${
-                    props.showTheater
+                    showTheater
                         ? "opacity-100 pointer-events-auto"
                         : "opacity-0 pointer-events-none"
                 }`}
             >
                 <div
                     className="fixed top-0 left-0 z-90 w-full h-full opacity-50 bg-black"
-                    onClick={() => props.handleCloseTheater()}
+                    onClick={() => handleCloseTheater()}
                 ></div>
                 <div
                     className={`w-full absolute z-99 bg-white transform border-0 transition duration-200 ease-in-out rounded-t-lg ${
-                        props.showTheater
-                            ? "translate-y-[0%] "
-                            : "translate-y-full"
+                        showTheater ? "translate-y-[0%] " : "translate-y-full"
                     }`}
                 >
                     <div className="overlay-header">
                         <div className="px-5 py-4 flex justify-between items-center">
                             <h3 className="font-semibold">Pick Theater</h3>
                             <IoCloseOutline
-                                onClick={props.handleCloseTheater}
+                                onClick={handleCloseTheater}
                                 className="w-[28px] h-[28px]"
                             />
                         </div>
@@ -67,6 +69,11 @@ export default function TheaterOverlay(props) {
                                                 className="flex items-center flex-1"
                                             >
                                                 <input
+                                                    onClick={() => {
+                                                        setPrice(`Rp. ${item.ticket_price}
+                                                .000`);
+                                                        handleCloseTheater();
+                                                    }}
                                                     type="radio"
                                                     name="mall"
                                                     id={item.id}

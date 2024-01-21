@@ -1,4 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 
 //components
 import Button from "@/components/basic-ui/Button";
@@ -13,6 +13,7 @@ import { getMovieDetail } from "../api/film";
 export default function MovieDetail() {
     const [detail, setDetail] = useState(null);
     const { id } = useParams();
+    const navigate = useNavigate();
     useEffect(() => {
         getDetail();
     }, [id]);
@@ -34,7 +35,10 @@ export default function MovieDetail() {
                     className="block w-full h-full object-cover max-h-96"
                 />
                 <div className="movie-detail-overlay"></div>
-                <div className="absolute top-5 left-3 bg-white p-3 rounded">
+                <div
+                    onClick={() => navigate("/")}
+                    className="absolute top-5 left-3 bg-white p-3 rounded cursor-pointer"
+                >
                     <GoArrowLeft className="text-2xl text-blues-500" />
                 </div>
             </div>

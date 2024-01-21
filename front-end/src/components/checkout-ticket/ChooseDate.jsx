@@ -7,7 +7,10 @@ import { TheaterOverlay } from "@/components/checkout-ticket";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 
-export default function ChooseDate() {
+export default function ChooseDate({ changeDate, changePrice }) {
+    const setPrice = (value) => {
+        changePrice(value);
+    };
     const days = [
         { day: "TUE", date: 16 },
         { day: "WED", date: 17 },
@@ -66,28 +69,28 @@ export default function ChooseDate() {
                 </div>
             </div>
             <div className="flex items-center overflow-y-hidden overflow-x-scroll scrollbar-none text-sm">
-                {[
-                    "12:00 PM",
-                    "03:00 PM",
-                    "17:30 PM",
-                    "21:00 PM",
-                    "23:00 PM",
-                ].map((time, index) => (
-                    <div
-                        key={index}
-                        onClick={() => handleTimeClick(index)}
-                        className={`rounded whitespace-nowrap p-2 font-medium mr-3 ${
-                            index === activeTime
-                                ? "bg-blues-500 text-white"
-                                : "bg-greys-500 text-greys-600"
-                        } ${index === 0 ? "ml-3" : ""}`}
-                    >
-                        {time}
-                    </div>
-                ))}
+                {["12:00 PM", "03:00 PM", "17:30 PM", "21:00 PM"].map(
+                    (time, index) => (
+                        <div
+                            key={index}
+                            onClick={() => {
+                                changeDate(index + 1);
+                                handleTimeClick(index + 1);
+                            }}
+                            className={`rounded whitespace-nowrap p-2 font-medium mr-3 ${
+                                index === activeTime
+                                    ? "bg-blues-500 text-white"
+                                    : "bg-greys-500 text-greys-600"
+                            } ${index === 0 ? "ml-3" : ""}`}
+                        >
+                            {time}
+                        </div>
+                    )
+                )}
             </div>
 
             <TheaterOverlay
+                {...{ setPrice }}
                 showTheater={showTheater}
                 handleCloseTheater={handleCloseTheater}
             />

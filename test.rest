@@ -8,7 +8,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/api/cek-login
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiZmlrcmlAZ21haWwuY29tIiwiaWF0IjoxNzA1ODE2Mzk1LCJleHAiOjE3MDU4MTY0MTV9.7wO_iTVmlvx3y73sf_iDa6q3ryhwvZFIPpOzDP4KbfM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiZmlrcmlAZ21haWwuY29tIiwiaWF0IjoxNzA1ODQ0NTAwLCJleHAiOjE3MDU4NDQ1MjB9.azJmyNXT_JSNbKS6K08AXVmM_-7-qpH4FZKKJs6xub8
 
 ###
 GET http://localhost:3000/api/token
@@ -33,3 +33,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/api/get-malls
+
+###
+GET http://localhost:3000/api/get-user-ticket
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiZmlrcmlAZ21haWwuY29tIiwiaWF0IjoxNzA1ODQ0NjEwLCJleHAiOjE3MDU4NDQ2MjV9.MycQ5ahfWQmlaihO7kr015Xn1-Eq9mMzG6Yvf2TipRA
