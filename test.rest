@@ -30,3 +30,6 @@ GET http://localhost:3000/api/get-films-filter-bioskop
 Content-Type: application/json
 
 { "bioskop": "cgv" }
+
+###
+GET http://localhost:3000/api/get-malls

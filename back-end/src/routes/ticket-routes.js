@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { submitTicket, getUserTicket } = require("../controllers/Ticket");
-const { submitTicket } = require("../controllers/Ticket");
 const { verifyToken } = require("../middleware/check-token");
 
 router.get("/get-user-ticket", getUserTicket);
-router.post("/submit-ticket", submitTicket);
 router.post("/submit-ticket", verifyToken, submitTicket);
 
 module.exports = router;
