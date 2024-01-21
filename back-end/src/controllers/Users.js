@@ -30,11 +30,11 @@ const signIn = async (req, res) => {
             return res.status(401).json({ message: "Invalid password" });
         }
 
-        // const accessToken = jwt.sign(
-        //     { userId: user.id, email: user.email },
-        //     process.env.ACCESS_TOKEN,
-        //     { expiresIn: "20s" }
-        // );
+        const accessToken = jwt.sign(
+            { userId: user.id, email: user.email },
+            process.env.ACCESS_TOKEN,
+            { expiresIn: "20s" }
+        );
         const refreshToken = jwt.sign(
             { userId: user.id, email: user.email },
             process.env.REFRESH_TOKEN,
@@ -55,7 +55,6 @@ const signIn = async (req, res) => {
         });
 
         res.json({ accessToken });
-
     } catch (error) {
         console.error("Error logging in:", error);
         res.status(500).send("Internal Server Error");
