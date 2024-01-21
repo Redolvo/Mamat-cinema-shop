@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme";
+import daisyui from "daisyui";
+
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
@@ -9,6 +12,7 @@ export default {
                 },
                 greys: {
                     500: "#E7EAEF",
+                    600: "#999FAB",
                 },
                 blues: {
                     400: "#0F6BC1",
@@ -21,7 +25,10 @@ export default {
                     600: "#CCA000",
                 },
             },
+            fontFamily: {
+                sans: ["Satoshi", ...defaultTheme.fontFamily.sans],
+            },
         },
     },
-    plugins: [],
+    plugins: [daisyui],
 };
