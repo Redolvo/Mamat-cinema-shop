@@ -49,4 +49,25 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    .movie-detail-overlay {
+        position: absolute;
+        background: linear-gradient(0deg, #fff 0%, rgba(0, 0, 0, 0) 51.19%);
+        height: 175px;
+        bottom: -2px;
+        z-index: 10;
+        width: 100%;
+    }
+    .screen-overlay {
+        position: absolute;
+        background: linear-gradient(180deg, #003566 -119.68%, #fff 60%);
+        height: 94px;
+        width: 100%;
+        top: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #003566;
+        font-size: 14px;
+        font-weight: 500;
+    }
 }
