@@ -107,10 +107,10 @@ export default function SignUp() {
             });
             if (response.status === 201) {
                 Swal.fire({
-                    title: "<strong>Akun berhasil terdaftar</strong>",
+                    title: "<h2>Account Created</h2>",
+                    text: "Click the button below to proceed to the sign-in process.",
                     icon: "success",
-                    html: "Klik tombol dibawah ini untuk melanjutkan ke halaman sign in.",
-                    focusConfirm: true,
+                    confirmButtonColor: "#003566",
                     confirmButtonText: "Sign In Now!",
                 }).then(() => navigate("/signin"));
             }

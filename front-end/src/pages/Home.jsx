@@ -1,13 +1,11 @@
 //components
 import { NowPlaying, ComingSoon, OnlineMovies } from "@/components/home";
 import Input from "@/components/basic-ui/Input";
-import Button from "@/components/basic-ui/Button";
 import Swal from "sweetalert2";
 import Footer from "@/components/Footer";
 
-
 //icons
-import { IoIosNotificationsOutline, IoIosArrowForward } from "react-icons/io";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -94,11 +92,15 @@ export default function Home() {
                 <IoLogOutOutline
                     onClick={() => {
                         Swal.fire({
-                            title: "<strong>Log Out?</strong>",
-                            icon: "warning",
+                            title: "<h2>Sign Out<h2/>",
+                            text: "Are you sure about signing out?",
+                            icon: "question",
                             focusConfirm: true,
-                            confirmButtonText: "Ok",
-                            showCloseButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: "Sign Out",
+                            confirmButtonColor: "#e93c58",
+                            cancelButtonColor: "#5c5e63",
+                            reverseButtons: true,
                         }).then(function (dismiss) {
                             if (dismiss.isConfirmed === true) {
                                 logout();
