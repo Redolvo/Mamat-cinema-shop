@@ -11,6 +11,7 @@ import CheckoutTicket from "@/pages/CheckoutTicket";
 import Ticket from "@/pages/Ticket";
 import TicketList from "@/pages/TicketList";
 
+
 function App() {
     return (
         <BrowserRouter>

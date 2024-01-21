@@ -1,44 +1,17 @@
-require('dotenv').config(); //ENV
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require('../models/users');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const { signUp, signIn, cekLogin, logout } = require("../controllers/Users");
+const { verifyToken } = require("../middleware/check-token");
+const { refreshToken } = require("../controllers/RefreshToken");
 
-router.post('/signup', async (req, res) => {
-  try {
-    const { full_name, email, password } = req.body;
-    const user = await User.create({ full_name, email, password });
+router.post("/signup", signUp);
 
-    res.status(201).json({ userId: user.id, email: user.email });
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+router.post("/signin", signIn);
 
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
+router.delete("/logout", logout);
 
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid email' });
-    }
+router.get("/cek-login", verifyToken, cekLogin);
 
-    const isValidPassword = await bcrypt.compare(password, user.password);
-
-    if (!isValidPassword) {
-      return res.status(401).json({ message: 'Invalid password' });
-    }
-
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    res.status(200).json({ token, userId: user.id, email: user.email });
-  } catch (error) {
-    console.error('Error logging in:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+router.get("/token", refreshToken);
 
 module.exports = router;

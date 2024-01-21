@@ -1,0 +1,17 @@
+POST http://localhost:3000/api/signin
+Content-Type: application/json
+
+{
+    "email" : "fikri@gmail.com",
+    "password" : "Test1234" 
+}
+
+###
+GET http://localhost:3000/api/cek-login
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiZmlrcmlAZ21haWwuY29tIiwiaWF0IjoxNzA1ODE2Mzk1LCJleHAiOjE3MDU4MTY0MTV9.7wO_iTVmlvx3y73sf_iDa6q3ryhwvZFIPpOzDP4KbfM
+
+###
+GET http://localhost:3000/api/token
+
+###
+DELETE http://localhost:3000/api/logout
