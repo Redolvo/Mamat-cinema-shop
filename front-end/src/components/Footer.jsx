@@ -23,7 +23,7 @@ export default function Footer() {
                 <div className="text-sm">Watch Together</div>
             </NavLink>
             <NavLink to="/ticket-list" className={isActive}>
-                <IoTicketOutline className="text-2xl mb-1 w-28 my-1" />
+                <IoTicketOutline className="text-2xl mb-1" />
                 <div className="text-sm">Tickets</div>
             </NavLink>
         </footer>

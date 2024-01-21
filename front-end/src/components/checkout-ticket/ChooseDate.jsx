@@ -2,6 +2,7 @@ import { useState } from "react";
 
 //components
 import { TheaterOverlay } from "@/components/checkout-ticket";
+
 //icons
 import { IoLocationOutline } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
