@@ -14,8 +14,6 @@ export async function fetchSignUp(dataform) {
 export async function fetchSignIn(dataform) {
     try {
         const response = await axios.post(`${apiUrl}/signin`, dataform);
-        const jwtToken = response.data.refreshToken;
-        document.cookie = `token=${jwtToken}; path=/;`;
         console.log(response);
         return response;
     } catch (error) {
@@ -29,6 +27,6 @@ export async function cekLogin() {
         return response;
     } catch (error) {
         console.error(error);
-        window.location.href ="/signin"
+        window.location.href = "/signin";
     }
 }

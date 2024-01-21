@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchSignUp } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import { LuEye, LuEyeOff } from "react-icons/lu";
+import Swal from "sweetalert2";
 
 export default function SignUp() {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function SignUp() {
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [checkboxDisabled, setCheckboxDisabled] = useState(true);
     const [typePassword, setTypePassword] = useState("password");
+    const [inPromise, setInPromise] = useState(false);
     const [typeConfirmPassword, setTypeConfirmPassword] = useState("password");
     useEffect(() => {
         if (isNameValid && isEmailValid && isPasswordValid) {
@@ -95,13 +97,26 @@ export default function SignUp() {
         return "";
     }
     const fetchDataUser = async (e) => {
+        setInPromise(true);
         e.preventDefault();
         try {
-            const response = await fetchSignUp({ full_name, email, password });
+            const response = await fetchSignUp({
+                full_name,
+                email,
+                password,
+            });
             if (response.status === 201) {
-                navigate("/signin");
+                Swal.fire({
+                    title: "<strong>Akun berhasil terdaftar</strong>",
+                    icon: "success",
+                    html: "Klik tombol dibawah ini untuk melanjutkan ke halaman sign in.",
+                    focusConfirm: true,
+                    confirmButtonText: "Sign In Now!",
+                }).then(() => navigate("/signin"));
             }
+            setInPromise(false);
         } catch (error) {
+            setInPromise(false);
             console.error(error);
         }
     };
@@ -269,14 +284,31 @@ export default function SignUp() {
                         </div>
                         <div className="mt-10">
                             <Button
-                                className="w-full"
+                                className="w-full flex justify-center items-center"
                                 type={"submit"}
                                 disabled={agree}
                             >
-                                Sign Up
+                                {inPromise ? (
+                                    <div className="w-6 h-6 rounded-full border-t-4 border-t-slate-400 border-b-4 border-l-4 border-r-4 border-white animate-spin"></div>
+                                ) : (
+                                    "Sign Up"
+                                )}
                             </Button>
                         </div>
                     </form>
+                    {/* <button
+                        onClick={() => {
+                            Swal.fire({
+                                title: "<strong>Akun berhasil terdaftar</strong>",
+                                icon: "success",
+                                html: "Klik tombol dibawah ini untuk melanjutkan ke halaman sign in.",
+                                focusConfirm: true,
+                                confirmButtonText: "Sign In Now!",
+                            }).then(() => navigate("/signin"));
+                        }}
+                    >
+                        test
+                    </button> */}
                 </div>
             </div>
         </div>

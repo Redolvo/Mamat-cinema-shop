@@ -1,13 +1,17 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 const app = express();
 const sequelize = require("./config/database");
 const usersRoutes = require("./routes/users-routes");
 const filmRoutes = require("./routes/film-routes");
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(express.json());
+app.use(cookieParser());
 
 // Cors
-app.use(cors());
 
 // MODELS
 const bioskop = require("./models/bioskop");
@@ -17,9 +21,6 @@ const film = require("./models/film");
 
 const checkTokenMiddleware = require("./middleware/check-token"); // Import middleware
 const PORT = 3000;
-
-app.use(express.json());
-app.use(cookieParser());
 
 // Routes
 app.use("/api", usersRoutes);

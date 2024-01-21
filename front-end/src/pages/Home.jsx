@@ -1,6 +1,7 @@
 //components
 import Input from "@/components/basic-ui/Input";
 import Button from "@/components/basic-ui/Button";
+import Swal from "sweetalert2";
 
 import {
     IoIosNotificationsOutline,
@@ -8,13 +9,81 @@ import {
     IoMdStar,
 } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
-import { cekLogin } from "../api/auth";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import * as jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-    cekLogin()
+    // const [name, setName] = useState("");
+    // const [token, setToken] = useState("");
+    const [expire, setExpire] = useState("");
+    const navigate = useNavigate();
+    useEffect(() => {
+        refreshToken();
+    }, []);
+    const refreshToken = async () => {
+        try {
+            const response = await axios.get("http://localhost:3000/api/token");
+            // setToken(response.data.accessToken);
+            const decoded = jwt_decode.jwtDecode(response.data.accessToken);
+            // setName(decoded.name);
+            setExpire(decoded.exp);
+        } catch (error) {
+            navigate("/signin");
+            console.error(error);
+        }
+    };
+
+    const axiosJWT = axios.create();
+
+    axiosJWT.interceptors.request.use(
+        async (config) => {
+            const currentDate = new Date();
+            if (expire * 1000 < currentDate.getTime()) {
+                const response = await axios.get(
+                    "http://localhost:3000/api/token"
+                );
+                config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+                // setToken(response.data.accessToken);
+                const decoded = jwt_decode.jwtDecode(response.data.accessToken);
+                // setName(decoded.name);
+                setExpire(decoded.exp);
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        }
+    );
+    const logout = async () => {
+        try {
+            await axios.delete("http://localhost:3000/api/logout");
+            navigate("/signin");
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // const cek = async () => {
+    //     try {
+    //         const response = await axiosJWT.get(
+    //             "http://localhost:3000/api/cek-login",
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                 },
+    //             }
+    //         );
+    //         console.log(response);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
     return (
         <>
             {/* header */}
+            {/* <button onClick={cek}>cek login</button> */}
             <header className="px-3 py-4 flex items-center mb-3">
                 <Input
                     placeholder="Movie interest?"
@@ -22,7 +91,22 @@ export default function Home() {
                     parentMargin="m-0"
                 ></Input>
                 <IoIosNotificationsOutline className="text-2xl m-2" />
-                <IoLogOutOutline className="text-2xl m-2 text-red-500" />
+                <IoLogOutOutline
+                    onClick={() => {
+                        Swal.fire({
+                            title: "<strong>Log Out?</strong>",
+                            icon: "warning",
+                            focusConfirm: true,
+                            confirmButtonText: "Ok",
+                            showCloseButton: true,
+                        }).then(function (dismiss) {
+                            if (dismiss.isConfirmed === true) {
+                                logout();
+                            }
+                        });
+                    }}
+                    className="text-2xl m-2 text-red-500 cursor-pointer"
+                />
             </header>
 
             {/* content */}
@@ -38,13 +122,13 @@ export default function Home() {
                                     All
                                 </div>
                                 <div className="mr-2 rounded px-2 py-1 border border-blues-500">
-                                    CGV's
+                                    CGV&apos;s
                                 </div>
                                 <div className="mr-2 rounded px-2 py-1 border border-blues-500">
-                                    Cinepolis's
+                                    Cinepolis&apos;s
                                 </div>
                                 <div className="mr-2 rounded px-2 py-1 border border-blues-500">
-                                    Cinema XXI's
+                                    Cinema XXI&apos;s
                                 </div>
                             </div>
                         </div>
