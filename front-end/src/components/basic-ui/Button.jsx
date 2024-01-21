@@ -25,12 +25,16 @@ const Button = (props) => {
     const addtype = props.type ? types[props.type] : "button";
     const addClass = props.className ? `${props.className} ` : "";
     const typeClick = props.onClick;
+    const disabled_css = props.disabled
+        ? " !border-greys-600 !bg-greys-600 cursor-not-allowed"
+        : "";
+
     return (
         <>
             {typeClick ? (
                 <button
                     onClick={props.onClick}
-                    className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
+                    className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape} ${disabled_css}`}
                     disabled={props.disabled}
                     type={`${addtype}`}
                 >
@@ -38,7 +42,7 @@ const Button = (props) => {
                 </button>
             ) : (
                 <button
-                    className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape}`}
+                    className={`${addClass}inline-block text-center border hover:ring-0 focus:outline-none focus:ring-0 ${addSize} ${addcolor} ${addshape} ${disabled_css}`}
                     disabled={props.disabled}
                     type={`${addtype}`}
                 >

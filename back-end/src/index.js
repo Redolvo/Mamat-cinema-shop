@@ -1,14 +1,17 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 const app = express();
 const sequelize = require("./config/database");
 const usersRoutes = require("./routes/users-routes");
 const filmRoutes = require("./routes/film-routes");
-const ticketRoutes = require("./routes/ticket-routes");
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(express.json());
+app.use(cookieParser());
 
 // Cors
-app.use(cors());
 
 // MODELS
 const mall = require("./models/mall");
@@ -19,9 +22,6 @@ const ticket_transaction = require("./models/ticket_transaction");
 
 const checkTokenMiddleware = require("./middleware/check-token"); // Import middleware
 const PORT = 3000;
-
-app.use(express.json());
-app.use(cookieParser());
 
 // Routes
 app.use("/api", usersRoutes);

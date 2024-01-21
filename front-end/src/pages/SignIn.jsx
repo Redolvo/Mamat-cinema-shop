@@ -4,8 +4,11 @@ import { NavLink } from "react-router-dom";
 import { fetchSignIn } from "../api/auth";
 import { useEffect, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function SignIn() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -13,6 +16,7 @@ export default function SignIn() {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [signIn, setSignIn] = useState(true);
+    const [inPromise, setInPromise] = useState(false);
     const [typePassword, setTypePassword] = useState("password");
     useEffect(() => {
         if (isEmailValid && isPasswordValid) {
@@ -46,13 +50,21 @@ export default function SignIn() {
         return "";
     }
     const fetchDataUser = async (e) => {
+        setInPromise(true);
         e.preventDefault();
         try {
             const response = await fetchSignIn({ email, password });
-            if (response.status === 201) {
-                //
+            setInPromise(false);
+            if (response.status === 200) {
+                Swal.fire({
+                    title: "<strong>Sign In Berhasil!</strong>",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1000,
+                }).then(() => navigate("/"));
             }
         } catch (error) {
+            setInPromise(false);
             console.error(error);
         }
     };
@@ -158,11 +170,15 @@ export default function SignIn() {
                         </div>
                         <div className="mt-10">
                             <Button
-                                className="w-full"
+                                className="w-full flex justify-center items-center"
                                 disabled={signIn}
                                 type={"submit"}
                             >
-                                Sign In
+                                {inPromise ? (
+                                    <div className="w-6 h-6 rounded-full border-t-4 border-t-slate-400 border-b-4 border-l-4 border-r-4 border-white animate-spin"></div>
+                                ) : (
+                                    "Sign In"
+                                )}
                             </Button>
                         </div>
                     </form>

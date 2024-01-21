@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const {signUp, signIn, cekLogin, logout} = require('../controllers/Users');
-const checkTokenMiddleware = require("../middleware/check-token");
-
+const { signUp, signIn, cekLogin, logout } = require("../controllers/Users");
+const { verifyToken } = require("../middleware/check-token");
+const { refreshToken } = require("../controllers/RefreshToken");
 
 router.post("/signup", signUp);
 
 router.post("/signin", signIn);
 
-router.post("/logout", logout);
+router.delete("/logout", logout);
 
-router.get("/cek-login", checkTokenMiddleware, cekLogin);
+router.get("/cek-login", verifyToken, cekLogin);
+
+router.get("/token", refreshToken);
 
 module.exports = router;
