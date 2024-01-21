@@ -57,7 +57,7 @@ export default function SignIn() {
             setInPromise(false);
             if (response.status === 200) {
                 Swal.fire({
-                    title: "<strong>Sign In Berhasil!</strong>",
+                    title: "<h2>Sign In Success!</h2>",
                     icon: "success",
                     showConfirmButton: false,
                     timer: 1000,

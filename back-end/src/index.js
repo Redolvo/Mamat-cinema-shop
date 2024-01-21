@@ -8,6 +8,7 @@ const sequelize = require("./config/database");
 const usersRoutes = require("./routes/users-routes");
 const filmRoutes = require("./routes/film-routes");
 const ticketRoutes = require("./routes/ticket-routes");
+const mallRoutes = require("./routes/mall-routes");
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(cookieParser());
@@ -28,6 +29,7 @@ const PORT = 3000;
 app.use("/api", usersRoutes);
 app.use("/api", filmRoutes);
 app.use("/api", ticketRoutes);
+app.use("/api", mallRoutes);
 
 sequelize
     .sync({ force: false })
