@@ -6,12 +6,18 @@ import Footer from "@/components/Footer";
 //icons
 import { GoArrowLeft } from "react-icons/go";
 
+import { useNavigate } from "react-router-dom";
+
 export default function TicketList() {
+    const navigate = useNavigate();
     return (
         <>
             {/* header */}
             <header className="px-3 py-4 flex items-center mb-3">
-                <div className="bg-white p-3 rounded">
+                <div
+                    onClick={() => navigate("/")}
+                    className="bg-white p-3 rounded cursor-pointer"
+                >
                     <GoArrowLeft className="text-2xl text-blues-500" />
                 </div>
                 <div className="ml-3">

@@ -1,6 +1,6 @@
-const ticket_transaction = require('../models/ticket_transaction');
-const film = require('../models/film');
-const schedule = require('../models/schedule');
+const ticket_transaction = require("../models/ticket_transaction");
+const film = require("../models/film");
+const schedule = require("../models/schedule");
 
 const getUserTicket = async (req, res) => {
     try {
@@ -14,7 +14,9 @@ const getUserTicket = async (req, res) => {
         });
 
         // Extract schedule ids from ticket transactions
-        const scheduleIds = ticket_transactions.map(transaction => transaction.schedule_id);
+        const scheduleIds = ticket_transactions.map(
+            (transaction) => transaction.schedule_id
+        );
 
         // Fetch schedules based on schedule ids
         const schedules = await schedule.findAll({
@@ -24,7 +26,7 @@ const getUserTicket = async (req, res) => {
         });
 
         // Fetch film data for each schedule
-        const filmIds = schedules.map(s => s.film_id);
+        const filmIds = schedules.map((s) => s.film_id);
         const films = await film.findAll({
             where: {
                 id: filmIds,
@@ -32,9 +34,13 @@ const getUserTicket = async (req, res) => {
         });
 
         // Combine the data
-        const result = ticket_transactions.map(transaction => {
-            const matchingSchedule = schedules.find(schedule => schedule.id === transaction.schedule_id);
-            const matchingFilm = films.find(film => film.id === matchingSchedule.film_id);
+        const result = ticket_transactions.map((transaction) => {
+            const matchingSchedule = schedules.find(
+                (schedule) => schedule.id === transaction.schedule_id
+            );
+            const matchingFilm = films.find(
+                (film) => film.id === matchingSchedule.film_id
+            );
 
             return {
                 ...transaction.toJSON(),
@@ -46,24 +52,24 @@ const getUserTicket = async (req, res) => {
         res.json(result);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send("Internal Server Error");
     }
 };
 
-
-const submitTicket = async(req, res) => {
+const submitTicket = async (req, res) => {
     try {
-        const {user_id, schedule_id, seat_number} = req.body
+        const user_id = req.userId;
+        const { schedule_id, seat_number } = req.body;
         const ticket_transactions = await ticket_transaction.create({
             user_id,
             schedule_id,
             seat_number,
-        })
-        res.status(201).json({ message: "Booking success"});
+        });
+        res.status(201).json({ message: "Booking success" });
     } catch (err) {
         console.error("Error creating ticket:", error);
         res.status(500).send("Internal Server Error");
     }
-}
+};
 
 module.exports = { getUserTicket, submitTicket };
