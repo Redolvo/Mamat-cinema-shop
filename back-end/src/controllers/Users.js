@@ -84,7 +84,7 @@ const logout = async (req, res) => {
 };
 
 const cekLogin = (req, res) => {
-    res.status(201).json({ message: "Sign In Success" });
+    res.status(201).json({ msg: "sudah login", userId: req.userId });
 };
 
 module.exports = { signUp, signIn, logout, cekLogin };

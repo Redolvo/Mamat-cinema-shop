@@ -10,6 +10,8 @@ const verifyToken = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
         if (err) return res.status(402).send("Unauthorized");
         req.email = decoded.email;
+        req.userId = decoded.userId;
+        console.log(decoded);
         next();
     });
 };

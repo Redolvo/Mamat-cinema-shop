@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
     // const [name, setName] = useState("");
-    // const [token, setToken] = useState("");
+    const [token, setToken] = useState("");
     const [expire, setExpire] = useState("");
     const navigate = useNavigate();
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function Home() {
     const refreshToken = async () => {
         try {
             const response = await axios.get("http://localhost:3000/api/token");
-            // setToken(response.data.accessToken);
+            setToken(response.data.accessToken);
             const decoded = jwt_decode.jwtDecode(response.data.accessToken);
             // setName(decoded.name);
             setExpire(decoded.exp);
@@ -45,7 +45,7 @@ export default function Home() {
                     "http://localhost:3000/api/token"
                 );
                 config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-                // setToken(response.data.accessToken);
+                setToken(response.data.accessToken);
                 const decoded = jwt_decode.jwtDecode(response.data.accessToken);
                 // setName(decoded.name);
                 setExpire(decoded.exp);
@@ -65,21 +65,21 @@ export default function Home() {
         }
     };
 
-    // const cek = async () => {
-    //     try {
-    //         const response = await axiosJWT.get(
-    //             "http://localhost:3000/api/cek-login",
-    //             {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`,
-    //                 },
-    //             }
-    //         );
-    //         console.log(response);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
+    const cek = async () => {
+        try {
+            const response = await axiosJWT.get(
+                "http://localhost:3000/api/cek-login",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <>
             {/* header */}
