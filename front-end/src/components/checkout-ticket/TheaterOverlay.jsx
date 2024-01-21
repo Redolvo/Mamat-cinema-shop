@@ -4,31 +4,34 @@ import {
     IoLocationOutline,
     IoCallOutline,
 } from "react-icons/io5";
+import PropTypes from "prop-types";
 
-export default function TheaterOverlay({ showTheater, handleCloseTheater }) {
+export default function TheaterOverlay(props) {
     return (
         <>
             <div
                 className={`fixed top-0 left-0 w-full h-full flex flex-col justify-end transition duration-200 z-50 ease-in-out ${
-                    showTheater
+                    props.showTheater
                         ? "opacity-100 pointer-events-auto"
                         : "opacity-0 pointer-events-none"
                 }`}
             >
                 <div
                     className="fixed top-0 left-0 z-90 w-full h-full opacity-50 bg-black"
-                    onClick={() => handleCloseTheater()}
+                    onClick={() => props.handleCloseTheater()}
                 ></div>
                 <div
                     className={`w-full absolute z-99 bg-white transform border-0 transition duration-200 ease-in-out rounded-t-lg ${
-                        showTheater ? "translate-y-[0%] " : "translate-y-full"
+                        props.showTheater
+                            ? "translate-y-[0%] "
+                            : "translate-y-full"
                     }`}
                 >
                     <div className="overlay-header">
                         <div className="px-5 py-4 flex justify-between items-center">
                             <h3 className="font-semibold">Pick Theater</h3>
                             <IoCloseOutline
-                                onClick={handleCloseTheater}
+                                onClick={props.handleCloseTheater}
                                 className="w-[28px] h-[28px]"
                             />
                         </div>
@@ -41,7 +44,11 @@ export default function TheaterOverlay({ showTheater, handleCloseTheater }) {
                                         htmlFor="1"
                                         className="flex items-center flex-1"
                                     >
-                                        <input type="checkbox" id="1" />
+                                        <input
+                                            type="radio"
+                                            name="mall"
+                                            id="1"
+                                        />
                                         <div className="ml-3">
                                             <h3 className="font-medium">
                                                 Deli Park
@@ -57,17 +64,21 @@ export default function TheaterOverlay({ showTheater, handleCloseTheater }) {
                                                 .getElementById("my_modal_3")
                                                 .showModal()
                                         }
-                                        className="text-sm text-greys-600"
+                                        className="text-sm text-greys-600 cursor-pointer"
                                     >
                                         View Detail
                                     </div>
                                 </div>
                                 <div className="px-5 py-2 flex items-center justify-between">
                                     <label
-                                        htmlFor="1"
+                                        htmlFor="2"
                                         className="flex items-center flex-1"
                                     >
-                                        <input type="checkbox" id="1" />
+                                        <input
+                                            type="radio"
+                                            name="mall"
+                                            id="2"
+                                        />
                                         <div className="ml-3">
                                             <h3 className="font-medium">
                                                 Centre Point
@@ -83,17 +94,21 @@ export default function TheaterOverlay({ showTheater, handleCloseTheater }) {
                                                 .getElementById("my_modal_3")
                                                 .showModal()
                                         }
-                                        className="text-sm text-greys-600"
+                                        className="text-sm text-greys-600 cursor-pointer"
                                     >
                                         View Detail
                                     </div>
                                 </div>
                                 <div className="px-5 py-2 flex items-center justify-between">
                                     <label
-                                        htmlFor="1"
+                                        htmlFor="3"
                                         className="flex items-center flex-1"
                                     >
-                                        <input type="checkbox" id="1" />
+                                        <input
+                                            type="radio"
+                                            name="mall"
+                                            id="3"
+                                        />
                                         <div className="ml-3">
                                             <h3 className="font-medium">
                                                 Thamrin Plaza
@@ -109,7 +124,7 @@ export default function TheaterOverlay({ showTheater, handleCloseTheater }) {
                                                 .getElementById("my_modal_3")
                                                 .showModal()
                                         }
-                                        className="text-sm text-greys-600"
+                                        className="text-sm text-greys-600 cursor-pointer"
                                     >
                                         View Detail
                                     </div>
@@ -134,7 +149,7 @@ export default function TheaterOverlay({ showTheater, handleCloseTheater }) {
                             allowfullscreen=""
                             height="250"
                             loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
+                            referrerPolicy="no-referrer-when-downgrade"
                             className="w-full mb-4"
                         ></iframe>
                         <div className="flex mb-2">
@@ -159,3 +174,8 @@ export default function TheaterOverlay({ showTheater, handleCloseTheater }) {
         </>
     );
 }
+
+TheaterOverlay.propTypes = {
+    showTheater: PropTypes.any,
+    handleCloseTheater: PropTypes.any,
+};
