@@ -30,14 +30,14 @@ const signIn = async(req, res) => {
             return res.status(401).json({ message: "Invalid password" });
         }
 
-        const accessToken = jwt.sign(
-            { userId: user.id, email: user.email },
-            process.env.ACCESS_TOKEN,
-            { expiresIn: "20s" }
-        );
+        // const accessToken = jwt.sign(
+        //     { userId: user.id, email: user.email },
+        //     process.env.ACCESS_TOKEN,
+        //     { expiresIn: "20s" }
+        // );
         const refreshToken = jwt.sign(
             { userId: user.id, email: user.email },
-            process.env.ACCESS_TOKEN,
+            process.env.REFRESH_TOKEN,
             { expiresIn: "1d" }
         );
         
@@ -46,11 +46,10 @@ const signIn = async(req, res) => {
                 id: user.id
             }
         })
-        res.cookie('refreshToken', refreshToken, {
+        res.cookie('token', refreshToken, {
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60
         })
-
         res.status(200).json({ refreshToken });
     } catch (error) {
         console.error("Error logging in:", error);
@@ -78,7 +77,7 @@ const logout = async(req, res) => {
 }
 
 const cekLogin = (req, res) => {
-    res.status(201).json({ message: "Sign up success"});
+    res.status(201).json({ message: "Signin success"});
 }
 
 module.exports = { signUp, signIn, cekLogin, logout };

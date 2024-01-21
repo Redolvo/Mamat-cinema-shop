@@ -5,14 +5,16 @@ const app = express();
 const sequelize = require("./config/database");
 const usersRoutes = require("./routes/users-routes");
 const filmRoutes = require("./routes/film-routes");
+const ticketRoutes = require("./routes/ticket-routes");
 
 // Cors
 app.use(cors());
 
 // MODELS
-const bioskop = require("./models/bioskop");
 const mall = require("./models/mall");
 const film = require("./models/film");
+const schedule = require("./models/schedule");
+const ticket_transaction = require("./models/ticket_transaction");
 // MODELS END
 
 const checkTokenMiddleware = require("./middleware/check-token"); // Import middleware
@@ -24,6 +26,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api", usersRoutes);
 app.use("/api", filmRoutes);
+app.use("/api", ticketRoutes);
 
 sequelize
     .sync({ force: false })
