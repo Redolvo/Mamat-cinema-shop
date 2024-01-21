@@ -14,9 +14,10 @@ app.use(cookieParser());
 // Cors
 
 // MODELS
-const bioskop = require("./models/bioskop");
 const mall = require("./models/mall");
 const film = require("./models/film");
+const schedule = require("./models/schedule");
+const ticket_transaction = require("./models/ticket_transaction");
 // MODELS END
 
 const checkTokenMiddleware = require("./middleware/check-token"); // Import middleware
@@ -25,6 +26,7 @@ const PORT = 3000;
 // Routes
 app.use("/api", usersRoutes);
 app.use("/api", filmRoutes);
+app.use("/api", ticketRoutes);
 
 sequelize
     .sync({ force: false })

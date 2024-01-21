@@ -6,12 +6,30 @@ const film = sequelize.define('films', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  desc: {
+  synopsis: {
     type: DataTypes.TEXT
   },
   img_cover: {
     type: DataTypes.STRING
-  }
+  },
+  genre: {
+    type: DataTypes.STRING
+  },
+  duration: {
+    type: DataTypes.STRING
+  },
+  director: {
+    type: DataTypes.STRING
+  },
+  trailer_url: {
+    type: DataTypes.STRING
+  },
+  age_restriction: {
+    type: DataTypes.STRING
+  },
+  rating: {
+    type: DataTypes.INTEGER
+  },
 });
 
 module.exports = film;
